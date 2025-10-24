@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes.ping import router as ping_router
+from app.routes.ping import router as ping_router
 
 app = FastAPI(title="NeuraSense Core - Backend (MVP)")
 
