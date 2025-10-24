@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get("/ping")
+@router.get("/ping", tags=["Health"])
 async def ping():
-    return {"status": "ok"}
+    """Health check endpoint."""
+    return {"status": "ok", "message": "pong"}
