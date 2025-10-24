@@ -16,17 +16,16 @@ class ProjectCreate(BaseModel):
 async def create_project(payload: ProjectCreate):
     try:
         row = await insert_project(payload.dict())
-        # PostgREST devuelve una lista con la fila insertada
         if isinstance(row, list) and len(row) > 0:
-            return row[0]
-        return row
+            return {"status": "success", "project": row[0]}
+        return {"status": "error", "message": "Failed to insert project"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/")
-async def get_projects(limit: int = 20):
+@router.get("/", status_code=200)
+async def get_projects():
     try:
-        rows = await list_projects(limit=limit)
-        return rows
+        rows = await list_projects()
+        return {"status": "success", "projects": rows}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
