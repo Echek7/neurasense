@@ -1,7 +1,12 @@
-from supabase import create_client, Client
+# backend/app/supabase_client.py
+from dotenv import load_dotenv
 import os
+from supabase import create_client, Client
 
-SUPABASE_URL = os.getenv("SUPABASE_URL") or "https://fyxvkustmfelhvseentt.supabase.co"
-SUPABASE_KEY = os.getenv("SUPABASE_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5eHZrdXN0bWZlbGh2c2VlbnR0Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTI4MTYyNywiZXhwIjoyMDc2ODU3NjI3fQ.3p7248sPdRG-YuFdCHSYs1Je1m9DCh_7Zr8nsiecPlA"
+load_dotenv()  # carga las variables desde .env
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
