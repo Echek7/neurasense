@@ -1,8 +1,8 @@
+# backend/app/routes/ping.py
 from fastapi import APIRouter
 
-router = APIRouter()
+ping_router = APIRouter()
 
-@router.get("/ping", tags=["Health"])
+@ping_router.get("/")
 async def ping():
-    """Health check endpoint."""
-    return {"status": "ok", "message": "pong"}
+    return {"message": "pong"}
