@@ -3,14 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes.ping import ping_router
 from app.routes.projects import projects_router
 
-app = FastAPI(
-    title="NeuraSense API",
-    description="Backend centralizado para NeuraSense",
-    version="0.1.0"
-)
+app = FastAPI(title="NeuraSense API", version="0.1.0")
 
 # CORS para frontend
-origins = ["http://localhost:3000"]  # Ajusta según tu frontend
+origins = ["http://localhost:3000"]  # Ajusta si vas a deploy
 
 app.add_middleware(
     CORSMiddleware,
