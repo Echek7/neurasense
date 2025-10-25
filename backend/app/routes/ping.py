@@ -1,4 +1,3 @@
-# backend/app/routes/ping.py
 from fastapi import APIRouter
 
 ping_router = APIRouter()
