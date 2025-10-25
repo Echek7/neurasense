@@ -1,31 +1,33 @@
 # backend/app/routes/projects.py
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import Optional
-from app.services.supabase_client import insert_project, list_projects
+from typing import List
+from app.supabase_client import supabase  # cliente Supabase ya configurado
 
-router = APIRouter()
+projects_router = APIRouter()
 
-class ProjectCreate(BaseModel):
-    user_id: Optional[str] = None
-    title: str
-    prompt: Optional[str] = None
-    status: Optional[str] = "draft"
+# Modelo de proyecto
+class Project(BaseModel):
+    id: int | None = None
+    name: str
+    description: str | None = None
 
-@router.post("/", status_code=201)
-async def create_project(payload: ProjectCreate):
-    try:
-        row = await insert_project(payload.dict())
-        if isinstance(row, list) and len(row) > 0:
-            return {"status": "success", "project": row[0]}
-        return {"status": "error", "message": "Failed to insert project"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+# Obtener todos los proyectos
+@projects_router.get("/", response_model=List[Project])
+async def list_projects():
+    response = supabase.table("projects").select("*").execute()
+    if response.error:
+        raise HTTPException(status_code=500, detail=response.error.message)
+    return response.data
 
-@router.get("/", status_code=200)
-async def get_projects():
-    try:
-        rows = await list_projects()
-        return {"status": "success", "projects": rows}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+# Crear un proyecto
+@projects_router.post("/", response_model=Project)
+async def create_project(project: Project):
+    response = supabase.table("projects").insert({
+        "name": project.name,
+        "description": project.description
+    }).execute()
+    if response.error:
+        raise HTTPException(status_code=500, detail=response.error.message)
+    return response.data[0]
+
