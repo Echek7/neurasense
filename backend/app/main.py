@@ -1,4 +1,3 @@
-# backend/app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.ping import ping_router
@@ -11,10 +10,7 @@ app = FastAPI(
 )
 
 # CORS para frontend
-origins = [
-    "http://localhost:3000",  # frontend local
-    # Puedes agregar dominios de deploy
-]
+origins = ["http://localhost:3000"]  # Ajusta según tu frontend
 
 app.add_middleware(
     CORSMiddleware,
