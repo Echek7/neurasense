@@ -11,7 +11,7 @@ class Project(BaseModel):
     name: str
     description: str | None = None
 
-# Obtener todos los proyectos
+# Listar proyectos
 @projects_router.get("/", response_model=List[Project])
 async def list_projects():
     response = supabase.table("projects").select("*").execute()
@@ -19,7 +19,7 @@ async def list_projects():
         raise HTTPException(status_code=500, detail=response.error.message)
     return response.data
 
-# Crear un proyecto
+# Crear proyecto
 @projects_router.post("/", response_model=Project)
 async def create_project(project: Project):
     response = supabase.table("projects").insert({
@@ -29,4 +29,3 @@ async def create_project(project: Project):
     if response.error:
         raise HTTPException(status_code=500, detail=response.error.message)
     return response.data[0]
-
