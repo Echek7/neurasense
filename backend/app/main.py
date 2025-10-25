@@ -1,21 +1,29 @@
 # backend/app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.routes.ping import ping_router
+from app.routes.projects import projects_router
 
-# Routers
-from .routes.ping import router as ping_router
-from .routes.projects import router as projects_router  # <- asegúrate que existe
+app = FastAPI(
+    title="NeuraSense API",
+    description="Backend centralizado para NeuraSense",
+    version="0.1.0"
+)
 
-app = FastAPI(title="NeuraSense Core - Backend (MVP)")
+# CORS para frontend
+origins = [
+    "http://localhost:3000",  # frontend local
+    # Puedes agregar dominios de deploy
+]
 
-# Middleware global
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],    # ⚠️ en producción restringir orígenes
+    allow_origins=origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Routers registrados
-app.include_router(ping_router, prefix="/api")
-app.include_router(projects_router, prefix="/api/projects")
+# Routers
+app.include_router(ping_router, prefix="/api/ping", tags=["Ping"])
+app.include_router(projects_router, prefix="/api/projects", tags=["Projects"])
