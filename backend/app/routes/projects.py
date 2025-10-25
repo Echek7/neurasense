@@ -1,8 +1,7 @@
-# backend/app/routes/projects.py
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List
-from app.supabase_client import supabase  # cliente Supabase ya configurado
+from app.supabase_client import supabase
 
 projects_router = APIRouter()
 
